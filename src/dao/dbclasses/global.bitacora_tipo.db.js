@@ -1,8 +1,8 @@
-import bitacoraTipo from '../models/global.bitacora_tipo.js';
+import binnacleTypeModel from '../models/global.bitacora_tipo.js';
 
 export default class BitacoraTipoDB {
     constructor() {
-        this.model = bitacoraTipo;
+        this.model = binnacleTypeModel;
     }
 
     // Métodos para interactuar con la colección
