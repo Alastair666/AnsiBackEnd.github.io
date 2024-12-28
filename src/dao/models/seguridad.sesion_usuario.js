@@ -6,8 +6,16 @@ const userSessionSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "usuario"
     },
-    id_estatus_sesion: Number,
-    id_tipo_dispositivo: Number,
+    id_estatus_sesion: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "catalogo",
+        default: null
+    },
+    id_tipo_dispositivo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "catalogo",
+        default: null
+    },
     fecha_inicio: {
         type: Date,
         required: true,
