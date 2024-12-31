@@ -23,7 +23,8 @@ const recordSchema = mongoose.Schema({
     },
     id_seccion: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "seccion"
+        ref: "seccion",
+        default: null
     },
     año: Number,
     fecha_inicio: {

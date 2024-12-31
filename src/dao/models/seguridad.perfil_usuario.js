@@ -10,7 +10,10 @@ const userProfileSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "usuario"
     },
-    perfil_activo: Boolean,
+    perfil_activo: { 
+        type: Boolean,
+        default: false
+    },
 })
 
 // Exportando modelo de perfiles

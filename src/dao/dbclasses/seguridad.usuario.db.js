@@ -1,4 +1,5 @@
-import usersModel from '../models/seguridad.usuario.js';
+import usersModel from '../models/seguridad.usuario.js'
+import { createHash, isValidPassword } from '../../middleware/auth.js'
 
 export default class UsuarioDB {
     constructor() {
@@ -6,8 +7,17 @@ export default class UsuarioDB {
     }
 
     async create(data) {
-        const newEntry = new this.model(data);
-        return await newEntry.save();
+        const newUser = await this.model.create({
+            nombre : data.nombre,
+            ap_paterno : data.ap_paterno,
+            ap_materno : data.ap_materno,
+            email: data.email,
+            no_telefono: data.no_telefono,
+            clave_acceso: createHash(data.clave_acceso)
+        })
+        return newUser        
+        /*const newEntry = new this.model(data);
+        return await newEntry.save();//*/
     }
 
     async findAll() {
@@ -24,5 +34,22 @@ export default class UsuarioDB {
 
     async delete(id) {
         return await this.model.findByIdAndDelete(id);
+    }
+
+    getLoginUser = async(username, password)=>{
+        try {
+            //Consultando email en uso
+            const user = await usersModel.findOne({ email: username })
+            if (user) {
+                //Validando contraseña
+                if (isValidPassword(user, password)) {
+                    return user
+                }
+            }
+        }
+        catch   (error) {
+            console.error(error)
+            return null
+        }
     }
 }

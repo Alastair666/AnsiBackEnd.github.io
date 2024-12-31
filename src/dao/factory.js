@@ -1,5 +1,7 @@
 import config from '../config/persistence.config.js'
 
+export let ArchivoDrive
+export let ArchivoRegistro
 export let BitacoraTipo
 export let Bitacora
 export let CatalogoTipo
@@ -17,15 +19,20 @@ export let Registro
 export let Retos
 export let Seccion
 export let Tutores
+export let PerfilAcceso
+export let PerfilAccesoDetalle
 export let PerfilAcciones
 export let PerfilUsuario
 export let Perfil
 export let SesionUsuario
 export let Usuario
 
-async function initializeRepositories(){
+async function inicializaRepositorios(){
     switch (config.persistence){
         case 'MONGODB': {
+            // Obteniendo instancia de base de datos
+            const { default: ArchivoDriveDB } = await import('./dbclasses/global.archivo_drive.db.js')
+            const { default: ArchivoRegistroDB } = await import('./dbclasses/global.archivo_registro.db.js')
             const { default: BitacoraTipoDB } = await import('./dbclasses/global.bitacora_tipo.db.js')
             const { default: BitacoraDB } = await import('./dbclasses/global.bitacora_tipo.db.js')
             const { default: CatalogoTipoDB } = await import('./dbclasses/global.catalogo_tipo.db.js')
@@ -43,12 +50,16 @@ async function initializeRepositories(){
             const { default: RetosDB } = await import('./dbclasses/operacion.retos.db.js')
             const { default: SeccionDB } = await import('./dbclasses/operacion.seccion.db.js')
             const { default: TutoresDB } = await import('./dbclasses/operacion.tutores.db.js')
+            const { default: PerfilAccesoDB } = await import('./dbclasses/seguridad.perfil_acceso.db.js')
+            const { default: PerfilAccesoDetalleDB } = await import('./dbclasses/seguridad.perfil_acceso_definicion.db.js')
             const { default: PerfilAccionesDB } = await import('./dbclasses/seguridad.perfil_acciones.db.js')
             const { default: PerfilUsuarioDB } = await import('./dbclasses/seguridad.perfil_usuario.db.js')
             const { default: PerfilDB } = await import('./dbclasses/seguridad.perfil.db.js')
             const { default: SesionUsuarioDB } = await import('./dbclasses/seguridad.sesion_usuario.db.js')
             const { default: UsuarioDB } = await import('./dbclasses/seguridad.usuario.db.js')
-
+            // Asignando instancias a variables
+            ArchivoDrive = ArchivoDriveDB
+            ArchivoRegistro = ArchivoRegistroDB
             BitacoraTipo = BitacoraTipoDB
             Bitacora = BitacoraDB
             CatalogoTipo = CatalogoTipoDB
@@ -66,6 +77,8 @@ async function initializeRepositories(){
             Retos = RetosDB
             Seccion = SeccionDB
             Tutores = TutoresDB
+            PerfilAcceso = PerfilAccesoDB
+            PerfilAccesoDetalle = PerfilAccesoDetalleDB
             PerfilAcciones = PerfilAccionesDB
             PerfilUsuario = PerfilUsuarioDB
             Perfil = PerfilDB
@@ -76,4 +89,4 @@ async function initializeRepositories(){
     }
 }
 
-await initializeRepositories()
+await inicializaRepositorios()

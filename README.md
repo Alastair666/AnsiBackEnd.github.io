@@ -14,6 +14,62 @@
 - Descripción de la estructura de carpetas
 - Detalle de componentes clave
 
+### VIEWS - with ACTIONS
+**Login**
+- Autentica Usuario
+- Redirecciona a Register
+
+**Register**
+- Crea pre-registro
+
+**Index**
+- Página Principal al acceder
+    - -> Membresia Activa (Grupo/Distrito)
+    - -> Grafico por Secciones (Grupo/Distrito)
+    - -> Registros Pendientes de Autorizar (Grupo/Distrito)
+
+**Config (Admin)**
+- Distrito(s)
+- Grupo(s)
+- Autoriza Usuarios (Acepta/Rechaza) 
+    - -> Envia correo de respuesta
+- Sube fotografía de entidad (Grupo/Distrito)
+
+**Beneficiary**
+- CRUD
+- Autoriza registros
+- Importación másiva (XLSX) de registros
+- Sube fotografia de perfil
+
+**Records**
+- Autoriza/Rechaza registros 
+
+**Profile**
+- CRUD
+- Acciones
+- Accesos
+
+**User**
+- CRUD
+- Asigna Perfiles
+- Asigna Accesos
+
+**ENDPOINTS**
+
+Session
+-Auth
+-Register
+
+User
+-CRUD
+-Authorize
+
+CRUD
+-Beneficiary
+-Group
+-District
+-Profile
+
 ## Modelos de Datos
 - Ubicación de los modelos
 - Descripción de cada modelo
