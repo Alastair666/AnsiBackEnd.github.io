@@ -1,8 +1,8 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
-import UsuarioService from '../services/seguridad.usuario.service'
+import UsuarioService from '../services/seguridad.usuario.service.js'
 import PerfilService from '../services/seguridad.perfil.service.js'
-import PerfilUsuarioService from '../services/seguridad.perfil.usuario.service.js'
+import PerfilUsuarioService from '../services/seguridad.perfil_usuario.service.js'
 import jwt from 'passport-jwt'
 import { isValidPassword } from '../middleware/auth.js'
 
@@ -28,14 +28,26 @@ const initializePassport = ()=>{
     }
     passport.use('jwt', new JWTStrategy(options, async(jwt_payload, done)=>{
         console.log('Entro a passport JWT')
+        //console.log(process.env.JWT_SECRET)
         //console.log(jwt_payload)
         try {
-            const user = await UsuarioService.getUsuarioService().getUserById(jwt_payload.user.id)
-            //console.log(user)
-            if (!user) {
-                return done(null, false, { message: 'User not found' });
+            const user = await UsuarioService.getUsuarioService().getBy({email:jwt_payload.user.email})
+            // Validando si el usuario tiene un perfil asignado
+            const userProfile = await PerfilUsuarioService.getPerfilUsuarioService().getBy({ id_usuario: user._id, perfil_activo: true })
+            if (!user && !userProfile) {
+                return done(null, false, { message: 'User and/or Profile not found' });
             }
-            return done(null, user)//jwt_payload.user)
+            let userFinal = {
+                id: user._id,
+                nombre: user.nombre,
+                ap_paterno: user.ap_paterno,
+                ap_materno: user.ap_materno,
+                email: user.email,
+                no_telefono: user.no_telefono,
+                clave_acceso: user.clave_acceso,
+                id_perfil: userProfile.id_perfil
+            }
+            return done(null, userFinal)//jwt_payload.user)
         } catch (error){
             console.error(error)
             return done(error)
@@ -45,16 +57,16 @@ const initializePassport = ()=>{
     passport.use('register', new LocalStrategy({
         passReqToCallback: true,
         usernameField: 'email',
-        passwordField: 'password'
+        passwordField: 'clave_acceso'
     },  async(req,username,password,done)=>{
-            const { first_name, last_name1, last_name2, phone_number, role } = req.body
+            const { nombre, ap_paterno, ap_materno, no_telefono, role } = req.body
             try {
                 //Validando Campos Requeridos
                 let resultado = false, msj_error = ''
-                if (!first_name) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'first_name is required'
-                if (!last_name1) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'last_name 1 is required'
-                if (!last_name2) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'last_name 2 is required'
-                if (!phone_number) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'phone number is required'
+                if (!nombre) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'first_name is required'
+                if (!ap_paterno) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'last_name 1 is required'
+                if (!ap_materno) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'last_name 2 is required'
+                if (!no_telefono) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'phone number is required'
                 if (!role) msj_error += (!(msj_error.trim() === '') ? '\n' : '') + 'role is required'
                 if (msj_error.trim() === '')
                     resultado = true
@@ -77,14 +89,14 @@ const initializePassport = ()=>{
                     
                     //Creando registro de usuario
                     const newUser = {
-                        nombre: first_name, 
-                        ap_paterno: last_name1,
-                        ap_materno: last_name2,
+                        nombre: nombre, 
+                        ap_paterno: ap_paterno,
+                        ap_materno: ap_materno,
                         email: username,
-                        no_telefono: phone_number, 
+                        no_telefono: no_telefono, 
                         clave_acceso: password
                     }
-                    let result = await UsuarioService.getUsuarioService().createUser(newUser)
+                    let result = await UsuarioService.getUsuarioService().create(newUser)
                     if (result) {
                         console.log(`User created successfully`)
                         const user = await UsuarioService.getUsuarioService().getUserByEmail(username)
@@ -95,8 +107,20 @@ const initializePassport = ()=>{
                                 perfil_activo: true
                             }
                             const userProfile = await PerfilUsuarioService.getPerfilUsuarioService().create(newUserProfile)
-                            if (userProfile)
-                                return done(null, result)
+                            if (userProfile) {
+                                console.log(`User profile created successfully`)
+                                let userprofile = {
+                                    id: user._id,
+                                    nombre: user.nombre,
+                                    ap_paterno: user.ap_paterno,
+                                    ap_materno: user.ap_materno,
+                                    email: user.email,
+                                    no_telefono: user.no_telefono,
+                                    //clave_acceso: user.clave_acceso,
+                                    id_perfil: profile._id
+                                }
+                                return done(null, userprofile)
+                            }
                             else
                                 return done(null, false, { message: `Error assigning profile to user` })
                         }
@@ -117,16 +141,32 @@ const initializePassport = ()=>{
     // Log User
     passport.use('login', new LocalStrategy({
         usernameField: 'email',
-        passwordField: 'password'
+        passwordField: 'clave_acceso'
     }, async (username, password, done)=>{
         try {
             //Consultando email en uso
+            //console.log(`User: ${username} trying to login with Password: ${password}`)
             const user = await UsuarioService.getUsuarioService().getLoginUser(username, password)
             if (!user) return done(null, false, { message: `This email '${username}' doesn't exists!` })
             //Validando contraseña
             if (!isValidPassword(user, password)) return done(null, false, { message: `The password is incorrect.` })
+            // Validando si el usuario tiene un perfil asignado
+            const userProfile = await PerfilUsuarioService.getPerfilUsuarioService().getBy({ id_usuario: user._id, perfil_activo: true })
+            if (!userProfile) return done(null, false, { message: `User profile not assigned` })
+            //console.log(userProfile)
+            let userFinal = {
+                id: user._id,
+                nombre: user.nombre,
+                ap_paterno: user.ap_paterno,
+                ap_materno: user.ap_materno,
+                email: user.email,
+                no_telefono: user.no_telefono,
+                clave_acceso: user.clave_acceso,
+                id_perfil: userProfile.id_perfil
+            }
+            //console.log(userFinal)
             //Devolviendo resultado obtenido
-            return done(null, user)
+            return done(null, userFinal)
         } catch (err) {
             console.error(err)
             return done(err)
@@ -136,7 +176,19 @@ const initializePassport = ()=>{
         done(null, user._id)
     })
     passport.deserializeUser(async(id, done)=>{
-        let user = await userService.findById(id)
+        const userBD = await UsuarioService.getUsuarioService().findById(id)
+        // Validando si el usuario tiene un perfil asignado
+        const userProfile = await PerfilUsuarioService.getPerfilUsuarioService().getBy({ id_usuario: user._id, perfil_activo: true })
+        let user = {
+            id: userBD._id,
+            nombre: userBD.nombre,
+            ap_paterno: userBD.ap_paterno,
+            ap_materno: userBD.ap_materno,
+            email: userBD.email,
+            no_telefono: userBD.no_telefono,
+            clave_acceso: userBD.clave_acceso,
+            id_perfil: userProfile.id_perfil
+        }
         done(null, user)
     })
 }

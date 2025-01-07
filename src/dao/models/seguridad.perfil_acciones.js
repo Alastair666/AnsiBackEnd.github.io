@@ -11,5 +11,5 @@ const actionsProfileSchema = mongoose.Schema({
 })
 
 // Exportando modelo de perfiles
-const actionsProfileModel = mongoose.model("perfil_usuario", actionsProfileSchema)
+const actionsProfileModel = mongoose.model("perfil_acciones", actionsProfileSchema)
 export default actionsProfileModel

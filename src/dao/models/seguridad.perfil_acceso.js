@@ -6,7 +6,7 @@ const accessProfileSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "tablas"
     },
-    id_registro: Schema.Types.ObjectId,
+    id_registro: mongoose.Schema.Types.ObjectId,
     secuencia: Number,
     bit_nacional: Boolean,
     id_distrito: {

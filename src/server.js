@@ -5,9 +5,15 @@ import connectDB from './config/database.config.js'
 import passport from 'passport'
 import initializePassport from './config/passport.config.js'
 import cookieParser from 'cookie-parser'
+// Vistas de la aplicación
+import viewsRouter from './routes/views.route.js'
+// Endpoints de la API
+import userRouter from './routes/users.route.js'
+import profileRouter from './routes/profile.route.js'
 //Configuración Inicial
-import __dirname, { ifEquals, inc } from '../src/tools/utils.js'
+import __dirname, { ifEquals, inc } from './utils.js'
 import { serve, setup } from '../src/tools/swagger.js'
+
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config({ path: './src/settings.env' });
@@ -37,11 +43,15 @@ app.use(express.json())
 // Utilizar recursos estaticos
 app.use(express.static(__dirname + '/public'))
 app.use(cookieParser())
+// Utilizar recursos de autenticación
 initializePassport()
 app.use(passport.initialize())
 
 // Enlazando rutas para endpoints
-app.use('/api-docs', serve(), setup());
+app.use('/', viewsRouter)
+app.use('/api-docs', serve(), setup())
+app.use('/api/profiles', profileRouter)
+app.use('/api/users', userRouter)
 
 // Ejecutando Servidor
 app.listen(PORT, ()=>{

@@ -34,5 +34,5 @@ const accessProfileDefinitionSchema = mongoose.Schema({
 })
 
 // Exportando modelo de Accesos
-const accessProfileDefinitionModel = mongoose.model("perfil_acceso", accessProfileDefinitionSchema)
+const accessProfileDefinitionModel = mongoose.model("perfil_acceso_definicion", accessProfileDefinitionSchema)
 export default accessProfileDefinitionModel

@@ -6,12 +6,13 @@ import config from './persistence.config.js'
 const connectDB = async (attempts = 5) =>{
     let connected = false
     let retries = 0
-    console.log(config)
+    //console.log(config)
     while (!connected && retries < attempts) {
         try {
             // Configura cadena de conexión
             await mongoose.connect(config.database)
-            console.log('Connected to MongoDB');
+            //console.log(`Connected to MongoDB: ${config.database}`);
+            console.log(`Connected to MongoDB`);
             connected = true; // Marcamos como conectado si tenemos éxito
         }
         catch (err) {

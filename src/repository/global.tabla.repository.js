@@ -1,4 +1,4 @@
-import GenericRepository from "./GenericRepository.js";
+import GenericRepository from './generic.repository.js'
 
 export default class TablaRepository extends GenericRepository {
     constructor(dao){
