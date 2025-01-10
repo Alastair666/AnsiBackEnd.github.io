@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 const catalogTypeSchema = mongoose.Schema({
     id_tabla: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "tabla"
+        ref: "tabla",
+        default: null  // Permitir valores null
     },
     descripcion: String,
     id_tipo_superior: {

@@ -12,6 +12,7 @@ const catalogSchema = mongoose.Schema({
         default: null  // Permitir valores null
     },
     descripcion: String,
+    valor_alterno: String,
     id_tipo_superior: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "catalogo_tipo",

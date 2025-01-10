@@ -2,10 +2,6 @@ import mongoose from 'mongoose'
 
 // Definiendo Colección de Distrito
 const districtSchema = mongoose.Schema({
-    cp: {
-        type: String,
-        unique: true
-    },
     id_estatus: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "catalogo",

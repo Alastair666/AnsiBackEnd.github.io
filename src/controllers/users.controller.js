@@ -88,11 +88,10 @@ export const updateUser = async(req,res)=>{
         if (!errores.isEmpty()) {
             return res.status(400).json({ result: "error", errors: errores.array() });
         }
-        // Obteniendo ID del producto y parametros para actualizar
+        // Obteniendo ID del usuario y parametros para actualizar
         let { uid } = req.params
         let user = req.body
         let userToReplace = {
-            id: user._id,
             nombre: user.nombre,
             ap_paterno: user.ap_paterno,
             ap_materno: user.ap_materno,
@@ -101,12 +100,12 @@ export const updateUser = async(req,res)=>{
             clave_acceso: user.clave_acceso
         }
         // Editando usuario en BD
-        const result = await UsuarioService.getUsuarioService.update(uid, userToReplace)
+        const result = await UsuarioService.getUsuarioService().update(uid, userToReplace)
         //console.log(result)
         if (result) 
             res.status(200).json({ result: "success", payload: result })
         else 
-            res.status(400).json({ result: "error", errors: "Can't create the user" })
+            res.status(400).json({ result: "error", errors: "Can't update the user" })
     }
     catch (ex){
         res.status(400).json({ result: "error", errors: ex.message })
