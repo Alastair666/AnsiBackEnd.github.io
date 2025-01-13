@@ -7,8 +7,16 @@ const districtSchema = mongoose.Schema({
         ref: "catalogo",
         default: null
     },
-    descripcion: String,
-    abreviatura: String,
+    descripcion: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    abreviatura: {
+        type: String,
+        unique: true,
+        required: true
+    },
     fecha_fundacion: {
         type: Date,
         default: Date.now

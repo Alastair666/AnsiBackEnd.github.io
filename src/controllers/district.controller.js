@@ -1,13 +1,20 @@
 import { validationResult } from 'express-validator'
 import DistritoService from '../services/operacion.distrito.service.js'
-import passport from 'passport'
+import CatalogoService from '../services/global.catalogo.service.js'
 
 export const createDistrict = async(req,res)=> {
     try {
         const errores = validationResult(req)
         if (!errores.isEmpty())
             return res.status(401).json({ errores: errores.array() })
-        const newDistrict = req.body
+        //Obteniendo Catalogo Activo
+        const estatusDistrito = await CatalogoService.getCatalogoService().getCatalogByDescName('Estatus Distrito','Activo')
+        const newDistrict = {
+            id_estatus: estatusDistrito._id,
+            descripcion: req.body.descripcion,
+            abreviatura: req.body.abreviatura ? req.body.abreviatura : req.body.descripcion,
+            fecha_fundacion: req.body.fecha_fundacion
+        }
         const result = await DistritoService.getDistritoService().create(newDistrict)
         if (result) 
             res.status(200).json({ result: "success", payload: result })

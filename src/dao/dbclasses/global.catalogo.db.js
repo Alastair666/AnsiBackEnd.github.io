@@ -1,33 +1,80 @@
 import catalogModel from '../models/global.catalogo.js'
+import catalogTypeModel from '../models/global.catalogo_tipo.js'
+import GenericDB from './generic.db.js'
+import mongoose from 'mongoose'
 
-export default class CatalogoDB {
+export default class CatalogoDB extends GenericDB {
     constructor() {
-        this.model = catalogModel;
+        super(catalogModel)
+    }
+    // Obtiene todos los catalogos dado un id de tipo
+    async getCatalogByType(description_type) {
+        try {
+            const catalogType = await catalogTypeModel.findOne({ descripcion: description_type })
+            if (!catalogType)
+                return []
+            //const catalog = await this.model.findOne({ id_catalogo_tipo: catalogType._id })
+            const catalog = await this.model.find({ id_catalogo_tipo: catalogType._id })
+            if (!catalog)
+                return []
+            return catalog
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
 
-    // Crear un nuevo registro
-    async create(data) {
-        const newEntry = new this.model(data);
-        return await newEntry.save();
+    async getCatalogByType(description_type, id_catalogo_superior) {
+        try {
+            const catalogType = await catalogTypeModel.findOne({ descripcion: description_type })
+            if (!catalogType)
+                return []
+            //const catalog = await this.model.findOne({ id_catalogo_tipo: catalogType._id })
+            const catalog = await this.model.find({ 
+                id_catalogo_tipo: catalogType._id,
+                id_catalogo_superior: mongoose.Types.ObjectId(id_catalogo_superior)
+            })
+            if (!catalog)
+                return []
+            return catalog
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
-
-    // Obtener todos los registros
-    async findAll() {
-        return await this.model.find();
+    async getCatalogByName(description_type, description) {
+        try {
+            const catalogType = await catalogTypeModel.findOne({ descripcion: description_type })
+            if (!catalogType)
+                return []
+            //const catalog = await this.model.findOne({ id_catalogo_tipo: catalogType._id })
+            const catalog = await this.model.findOne({ 
+                id_catalogo_tipo: catalogType._id,
+                descripcion: description
+            })
+            if (!catalog)
+                return []
+            return catalog
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
-
-    // Obtener un registro por ID
-    async findById(id) {
-        return await this.model.findById(id);
-    }
-
-    // Actualizar un registro por ID
-    async update(id, data) {
-        return await this.model.findByIdAndUpdate(id, data, { new: true });
-    }
-
-    // Eliminar un registro por ID
-    async delete(id) {
-        return await this.model.findByIdAndDelete(id);
+    async getCatalogByTypeAndAlterValue(description_type, alter_value) {
+        try {
+            const catalogType = await catalogTypeModel.findOne({ descripcion: description_type })
+            if (!catalogType)
+                return []
+            const catalog = await this.model.findOne({ 
+                id_catalogo_tipo: catalogType._id,
+                valor_alterno: alter_value
+            })
+            if (!catalog)
+                return []
+            return catalog
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
 }

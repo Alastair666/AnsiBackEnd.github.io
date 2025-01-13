@@ -7,10 +7,11 @@ const router = Router()
 
 router.post('/', 
     [
-        body('id_estatus').notEmpty().withMessage('id_estatus is required'),
         body('descripcion').notEmpty().withMessage('descripcion is required'),
         body('abreviatura').notEmpty().withMessage('abreviatura is required'),
         body('fecha_fundacion').notEmpty().withMessage('fecha_fundacion is required')
-    ],createDistrict)
+    ], passportCall('jwt'), authorization('admin'), createDistrict)
 
-router.put('/:uid', updateDistrict)
+router.put('/:uid', passportCall('jwt'), authorization('admin'), updateDistrict)
+
+export default router

@@ -3,14 +3,18 @@ import mongoose from 'mongoose'
 // Definiendo Colección de Código Postales
 const postalCodeSchema = mongoose.Schema({
     cp: {
-        type: String,
-        unique: true
+        type: Number,
+        unique: true,
+        required: true
     },
-    c_estado: String,
-    c_municipio: String,
+    c_estado: {
+        type: String,
+        required: true
+    },
     id_pais: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "catalogo"
+        ref: "catalogo",
+        required: true
     }
 })
 

@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 const catalogSchema = mongoose.Schema({
     id_catalogo_tipo: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "catalogo_tipo"
+        ref: "catalogo_tipo", 
+        required: true
     },
     id_catalogo_superior: {
         type: mongoose.Schema.Types.ObjectId,

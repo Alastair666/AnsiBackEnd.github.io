@@ -37,7 +37,7 @@ async function inicializaRepositorios(){
             const { default: BitacoraTipoDB } = await import('./dbclasses/global.bitacora_tipo.db.js')
             const { default: BitacoraDB } = await import('./dbclasses/global.bitacora_tipo.db.js')
             const { default: CatalogoTipoDB } = await import('./dbclasses/global.catalogo_tipo.db.js')
-            const { default: CatalogoDB } = await import('./dbclasses/global.catalogo_tipo.db.js')
+            const { default: CatalogoDB } = await import('./dbclasses/global.catalogo.db.js')
             const { default: TablaDB } = await import('./dbclasses/global.tabla.db.js')
             const { default: AdelantoProgresivoDetalleDB } = await import('./dbclasses/operacion.adelanto_progresivo_detalle.db.js')
             const { default: AdelantoProgresivoDB } = await import('./dbclasses/operacion.adelanto_progresivo.db.js')
