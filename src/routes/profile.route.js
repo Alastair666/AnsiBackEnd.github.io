@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { createProfile, getProfileByName, getAllProfiles } from "../controllers/profile.controller.js"
+import { createProfile, getProfileByName, getAllProfiles, updateProfile, getProfileById } from "../controllers/profile.controller.js"
 import { authorization, passportCall } from '../middleware/auth.js'
 
 const router = Router()
@@ -43,11 +43,30 @@ router.post('/',
     [
         body('nombre').notEmpty().withMessage('nombre is required'),
         body('detalles').notEmpty().withMessage('detalles is required'),
-        body('administrador').notEmpty().withMessage('administrador is required')
+        body('administrador').notEmpty().withMessage('administrador is required'),
+        body('bit_nacional').notEmpty().withMessage('bit_nacional is required'),
+        body('bit_distrito').notEmpty().withMessage('bit_distrito is required'),
+        body('bit_region').notEmpty().withMessage('bit_region is required'),
+        body('bit_grupo').notEmpty().withMessage('bit_grupo is required'),
+        body('bit_seccion').notEmpty().withMessage('bit_seccion is required')
     ], createProfile)
 
 router.get('/:name', getProfileByName)
 
+router.get('/:pid', getProfileById)
+
 router.get('/', getAllProfiles)
+
+router.put('/:pid',
+    [
+        body('nombre').notEmpty().withMessage('nombre is required'),
+        body('detalles').notEmpty().withMessage('detalles is required'),
+        body('administrador').notEmpty().withMessage('administrador is required'),
+        body('bit_nacional').notEmpty().withMessage('bit_nacional is required'),
+        body('bit_distrito').notEmpty().withMessage('bit_distrito is required'),
+        body('bit_region').notEmpty().withMessage('bit_region is required'),
+        body('bit_grupo').notEmpty().withMessage('bit_grupo is required'),
+        body('bit_seccion').notEmpty().withMessage('bit_seccion is required')
+    ], updateProfile)
 
 export default router

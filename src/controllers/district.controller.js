@@ -28,12 +28,26 @@ export const createDistrict = async(req,res)=> {
 export const getDistrictById = async(req,res)=> {
     try {
         // Obteniendo ID del producto y parametros para actualizar
-        let { uid } = req.params
-        const result = await DistritoService.getDistritoService().getDistrictById(uid)
+        let { did } = req.params
+        const result = await DistritoService.getDistritoService().getDistrictById(did)
         if (result) 
             res.status(200).json({ result: "success", payload: result })
         else 
-            res.status(400).json({ result: "error", errors: "Can't find the user" })
+            res.status(400).json({ result: "error", errors: "Can't find the district" })
+    }
+    catch (ex){
+        res.status(400).json({ result: "error", errors: ex.message })
+    }
+}
+
+export const getDistrict = async(req,res)=> {
+    try {
+        // Obteniendo ID del producto y parametros para actualizar
+        const result = await DistritoService.getDistritoService().getAll()
+        if (result) 
+            res.status(200).json({ result: "success", payload: result })
+        else 
+            res.status(400).json({ result: "error", errors: "Can't find the districts" })
     }
     catch (ex){
         res.status(400).json({ result: "error", errors: ex.message })

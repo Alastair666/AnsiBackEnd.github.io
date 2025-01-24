@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { createGroup } from '../controllers/group.controller.js'
+import { createGroup, getGroup, getGroupById, updateGroup } from '../controllers/group.controller.js'
 import { authorization, passportCall } from '../middleware/auth.js'
 
 const router = Router()
@@ -14,5 +14,11 @@ router.post('/',
         body('id_domicilio').notEmpty().withMessage('id_domicilio is required'),
         body('fecha_fundacion').notEmpty().withMessage('fecha_fundacion is required')
     ], passportCall('jwt'), authorization('user'), createGroup)
+
+router.get('/', passportCall('jwt'), authorization('admin'), getGroup)
+
+router.get('/:gid', passportCall('jwt'), authorization('admin'), getGroupById)
+
+router.put('/:gid', passportCall('jwt'), authorization('admin'), updateGroup)
 
 export default router

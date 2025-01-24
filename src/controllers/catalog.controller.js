@@ -9,7 +9,7 @@ export const getCatalogByTypeName = async(req,res)=> {
         
         /** TODO: Implementar la lógica para obtener el catálogo por nombre */
         const catalog = req.body
-        const result = await CatalogService.getCatalogoService().getCatalogByDescType(catalog.description_type)
+        const result = await CatalogService.getCatalogoService().getCatalogByDescType(catalog.description_type, catalog.id_catalogo_superior)
         if (result) 
             res.status(200).json({ result: "success", payload: result })
         else 

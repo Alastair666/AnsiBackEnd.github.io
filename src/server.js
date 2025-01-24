@@ -12,6 +12,7 @@ import userRouter from './routes/users.route.js'
 import profileRouter from './routes/profile.route.js'
 import catalogRouter from './routes/catalog.route.js'
 import districtRouter from './routes/district.route.js'
+import groupRouter from './routes/group.route.js'
 import cpRouter from './routes/cp.route.js'
 import addressRouter from './routes/address.route.js'
 //Configuración Inicial
@@ -60,6 +61,7 @@ app.use('/api/catalog', catalogRouter)
 app.use('/api/district', districtRouter)
 app.use('/api/cp', cpRouter)
 app.use('/api/address', addressRouter)
+app.use('/api/group', groupRouter) 
 
 // Ejecutando Servidor
 app.listen(PORT, ()=>{

@@ -34,6 +34,7 @@ const initializePassport = ()=>{
             const user = await UsuarioService.getUsuarioService().getBy({email:jwt_payload.user.email})
             // Validando si el usuario tiene un perfil asignado
             const userProfile = await PerfilUsuarioService.getPerfilUsuarioService().getBy({ id_usuario: user._id, perfil_activo: true })
+            
             if (!user && !userProfile) {
                 return done(null, false, { message: 'User and/or Profile not found' });
             }

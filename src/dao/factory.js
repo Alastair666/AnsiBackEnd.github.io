@@ -20,7 +20,6 @@ export let Retos
 export let Seccion
 export let Tutores
 export let PerfilAcceso
-export let PerfilAccesoDetalle
 export let PerfilAcciones
 export let PerfilUsuario
 export let Perfil
@@ -52,7 +51,6 @@ async function inicializaRepositorios(){
             const { default: SeccionDB } = await import('./dbclasses/operacion.seccion.db.js')
             const { default: TutoresDB } = await import('./dbclasses/operacion.tutores.db.js')
             const { default: PerfilAccesoDB } = await import('./dbclasses/seguridad.perfil_acceso.db.js')
-            const { default: PerfilAccesoDetalleDB } = await import('./dbclasses/seguridad.perfil_acceso_definicion.db.js')
             const { default: PerfilAccionesDB } = await import('./dbclasses/seguridad.perfil_acciones.db.js')
             const { default: PerfilUsuarioDB } = await import('./dbclasses/seguridad.perfil_usuario.db.js')
             const { default: PerfilDB } = await import('./dbclasses/seguridad.perfil.db.js')
@@ -79,7 +77,6 @@ async function inicializaRepositorios(){
             Seccion = SeccionDB
             Tutores = TutoresDB
             PerfilAcceso = PerfilAccesoDB
-            PerfilAccesoDetalle = PerfilAccesoDetalleDB
             PerfilAcciones = PerfilAccionesDB
             PerfilUsuario = PerfilUsuarioDB
             Perfil = PerfilDB

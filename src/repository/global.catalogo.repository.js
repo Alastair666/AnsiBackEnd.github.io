@@ -4,9 +4,6 @@ export default class CatalogoRepository extends GenericRepository {
     constructor(dao){
         super(dao);
     }
-    getCatalogByDescType = (description_type) => {
-        return this.dao.getCatalogByType(description_type)
-    }
     getCatalogByDescType = (description_type, id_catalogo_superior) => {
         return this.dao.getCatalogByType(description_type, id_catalogo_superior)
     }
