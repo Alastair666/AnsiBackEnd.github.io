@@ -6,8 +6,16 @@ const actionsProfileSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "perfil"
     },
-    id_accion: Number,
-    permitir: Boolean,
+    id_entidad_accion: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tabla"
+    },
+    acciones: {
+        Create: { type: Boolean, required: true, default: false },
+        Read: { type: Boolean, required: true, default: false },
+        Update: { type: Boolean, required: true, default: false },
+        Delete: { type: Boolean, required: true, default: false }
+    }
 })
 
 // Exportando modelo de perfiles

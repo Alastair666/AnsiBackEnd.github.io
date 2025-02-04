@@ -10,11 +10,14 @@ import viewsRouter from './routes/views.route.js'
 // Endpoints de la API
 import userRouter from './routes/users.route.js'
 import profileRouter from './routes/profile.route.js'
+import profileActionRouter from './routes/profile_actions.route.js'
 import catalogRouter from './routes/catalog.route.js'
 import districtRouter from './routes/district.route.js'
 import groupRouter from './routes/group.route.js'
 import cpRouter from './routes/cp.route.js'
 import addressRouter from './routes/address.route.js'
+import beneficiaryRouter from './routes/beneficiary.route.js'
+
 //Configuración Inicial
 import __dirname, { ifEquals, inc } from './utils.js'
 import { serve, setup } from '../src/tools/swagger.js'
@@ -56,12 +59,14 @@ app.use(passport.initialize())
 app.use('/', viewsRouter)
 app.use('/api-docs', serve(), setup())
 app.use('/api/profiles', profileRouter)
+app.use('/api/profileAction', profileActionRouter)
 app.use('/api/users', userRouter)
 app.use('/api/catalog', catalogRouter)
 app.use('/api/district', districtRouter)
 app.use('/api/cp', cpRouter)
 app.use('/api/address', addressRouter)
-app.use('/api/group', groupRouter) 
+app.use('/api/group', groupRouter)
+app.use('/api/beneficiary', beneficiaryRouter)
 
 // Ejecutando Servidor
 app.listen(PORT, ()=>{

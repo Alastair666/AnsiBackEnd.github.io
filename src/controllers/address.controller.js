@@ -1,7 +1,5 @@
 import { validationResult } from 'express-validator'
 import DomicilioService from '../services/operacion.domicilio.service.js'
-import CodigoPostalService from '../services/operacion.codigo_postal.service.js'
-import CatalogoService from '../services/global.catalogo.service.js'
 import { createCPtool } from './cp.controller.js'
 
 export const createAddress = async(req,res)=> {

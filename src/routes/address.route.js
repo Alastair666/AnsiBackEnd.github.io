@@ -16,7 +16,7 @@ router.post('/',
         body('no_int').notEmpty().withMessage('no_int is required'),
         body('id_pais').notEmpty().withMessage('id_pais is required'),
         body('id_estado').notEmpty().withMessage('id_estado is required')
-    ], passportCall('jwt'), authorization('user'), createAddress)
+    ], passportCall('jwt'), authorization({ role: 'user', entity: 'operacion.domicilio', actions: 'onlyCreate' }), createAddress)
 
 router.put('/:aid',
     [
@@ -29,12 +29,12 @@ router.put('/:aid',
         body('no_int').notEmpty().withMessage('no_int is required'),
         body('id_pais').notEmpty().withMessage('id_pais is required'),
         body('id_estado').notEmpty().withMessage('id_estado is required')
-    ], passportCall('jwt'), authorization('user'), updateAddress)
+    ], passportCall('jwt'), authorization({ role: 'user', entity: 'operacion.domicilio', actions: 'onlyCreate' }), updateAddress)
 
-router.get('/', passportCall('jwt'), authorization('user'), getAddress)
+router.get('/', passportCall('jwt'), authorization({ role: 'user', entity: 'operacion.domicilio', actions: 'onlyRead' }), getAddress)
 
-router.get('/:aid', passportCall('jwt'), authorization('user'), getAddressById)
+router.get('/:aid', passportCall('jwt'), authorization({ role: 'user', entity: 'operacion.domicilio', actions: 'onlyRead' }), getAddressById)
 
-router.delete('/:aid', passportCall('jwt'), authorization('user'), deleteAddressById)
+router.delete('/:aid', passportCall('jwt'), authorization({ role: 'user', entity: 'operacion.domicilio', actions: 'onlyDelete' }), deleteAddressById)
 
 export default router

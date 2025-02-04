@@ -49,13 +49,13 @@ router.post('/',
         body('bit_region').notEmpty().withMessage('bit_region is required'),
         body('bit_grupo').notEmpty().withMessage('bit_grupo is required'),
         body('bit_seccion').notEmpty().withMessage('bit_seccion is required')
-    ], createProfile)
+    ], passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.perfil', actions: 'full' }), createProfile)
 
-router.get('/:name', getProfileByName)
+router.get('/:name', passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.perfil', actions: 'full' }), getProfileByName)
 
-router.get('/:pid', getProfileById)
+router.get('/:pid', passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.perfil', actions: 'full' }), getProfileById)
 
-router.get('/', getAllProfiles)
+router.get('/', passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.perfil', actions: 'full' }), getAllProfiles)
 
 router.put('/:pid',
     [
@@ -67,6 +67,6 @@ router.put('/:pid',
         body('bit_region').notEmpty().withMessage('bit_region is required'),
         body('bit_grupo').notEmpty().withMessage('bit_grupo is required'),
         body('bit_seccion').notEmpty().withMessage('bit_seccion is required')
-    ], updateProfile)
+    ], passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.perfil', actions: 'full' }), updateProfile)
 
 export default router

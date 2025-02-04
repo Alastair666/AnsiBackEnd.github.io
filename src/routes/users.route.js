@@ -63,7 +63,7 @@ router.post('/register',
         body('no_telefono').notEmpty().withMessage('no_telefono is required'),
         body('clave_acceso').notEmpty().withMessage('clave_acceso is required'),
         body('perfil').notEmpty().withMessage('perfil is required')
-    ],getRegister)
+    ], passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.usuario', actions: 'full' }), getRegister)
 /**
  * @swagger
  * /api/users/failregister:
@@ -157,7 +157,7 @@ router.get('/faillogin', async (req, res) => {
  *       404:
  *         description: No fue posible encontrar al Usuario
  */
-router.get('/:uid', passportCall('jwt'), authorization('admin'), getUserById)
+router.get('/:uid', passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.usuario', actions: 'full' }), getUserById)
 /**
  * @swagger
  * /api/users/{uid}:
@@ -209,7 +209,7 @@ router.get('/:uid', passportCall('jwt'), authorization('admin'), getUserById)
  *       404:
  *         description: No fue posible encontrar al Usuario
  */
-router.put('/:uid', passportCall('jwt'), authorization('admin'), updateUser)
+router.put('/:uid', passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.usuario', actions: 'full' }), updateUser)
 /**
  * @swagger
  * /api/users/{uid}:
@@ -231,6 +231,6 @@ router.put('/:uid', passportCall('jwt'), authorization('admin'), updateUser)
  *       404:
  *         description: No fue posible encontrar al Usuario
  */
-router.delete('/:uid', passportCall('jwt'), authorization('admin'), deleteUser)
+router.delete('/:uid', passportCall('jwt'), authorization({ role: 'admin', entity: 'seguridad.usuario', actions: 'full' }), deleteUser)
 
 export default router

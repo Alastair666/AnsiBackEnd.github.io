@@ -4,6 +4,6 @@ import { authorization, passportCall } from '../middleware/auth.js'
 
 const router = Router()
 
-router.get('/:cp', passportCall('jwt'), authorization('user'), getPostalCode)
+router.get('/:cp', passportCall('jwt'), authorization({ role: 'user', entity: 'operacion.codigo_postal', actions: 'onlyRead' }), getPostalCode)
 
 export default router

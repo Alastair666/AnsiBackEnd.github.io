@@ -21,6 +21,10 @@ const recordSchema = mongoose.Schema({
         ref: "catalogo",
         default: null
     },
+    completado: {
+        type: Boolean,
+        default: false
+    },
     id_seccion: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "seccion",
@@ -34,6 +38,28 @@ const recordSchema = mongoose.Schema({
     fecha_termino: {
         type: Date,
         default: Date.now
+    },
+    observaciones: {
+        type: [
+            {
+                id_tipo: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "catalogo",
+                    default: null,
+                    required: true
+                },
+                fecha: {
+                    type: Date,
+                    default: Date.now,
+                    required: true
+                },
+                comentarios: {
+                    type: String,
+                    required: true
+                }
+            }
+        ],
+        default: []
     }
 })
 
